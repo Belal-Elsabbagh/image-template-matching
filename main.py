@@ -6,6 +6,6 @@ if __name__ == '__main__':
     color_pencils_path = r'data\color_pencils.jpeg'
     color_pencils_template_path = r'data\color_pencils_template.jpeg'
 
-    test_size_invariant_template_matching(rainbow_path, rainbow_template_path, 0.999, False)
     test_template_matching(color_pencils_path, color_pencils_template_path)
+    test_size_invariant_template_matching(rainbow_path, rainbow_template_path, 0.999, False)
     test_template_matching(rainbow_path, color_pencils_template_path, 0.6, False)

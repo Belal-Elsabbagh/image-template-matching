@@ -6,16 +6,10 @@ def test_template_matching(img_path, template_path, threshold=0.8,best_only=True
     test_img = read_img(img_path)
     test_template = read_img(template_path)
     result = match_template_to_img(test_img, test_template, threshold, best_only)
-    if result is None:
-        print(f'{template_path} does not exist in {img_path}')
-        return None
-    show_img(f'detected {template_path} in {img_path}', result)
+    show_img(f'showing found matches of {template_path} in {img_path}', result)
 
 def test_size_invariant_template_matching(img_path, template_path, threshold=0.8,best_only=True):
     test_img = read_img(img_path)
     test_template = read_img(template_path)
     result = match_template_to_img_size_invariant(test_img, test_template, threshold, best_only)
-    if result is None:
-        print(f'{template_path} does not exist in {img_path}')
-        return None
-    show_img(f'detected {template_path} in {img_path}', result)
+    show_img(f'showing found matches of {template_path} in {img_path}', result)

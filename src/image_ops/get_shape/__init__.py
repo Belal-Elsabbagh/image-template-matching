@@ -22,4 +22,4 @@ class ImageShape:
             'min_level': self.min_level,
             'max_level': self.max_level,
         }
-        return f"image shape: {data}"
+        return f"image shape: {self.__dict__}"

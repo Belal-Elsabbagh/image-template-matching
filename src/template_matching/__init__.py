@@ -1,35 +1,48 @@
 """ 
 This module contains the main function for template matching.
 """
-import numpy as np
 from cv2.mat_wrapper import Mat
 
-from src.image_ops import get_shape, match_template, draw_rectangle_on_image, convert_to_grayscale
+from src.image_ops import get_shape, draw_rectangle_on_image, convert_to_grayscale
+from src.template_matching.get_matches import get_matches, get_matches_size_invariant
 
 
 def match_template_to_img(img: Mat,
                           template: Mat,
                           threshold: float = 0.5,
-                          best_only: bool = True) -> Mat:
-    """Searches for the template in the image and draws a rectangle around it if found.
+                          best_only: bool = True, matching_method: callable=None) -> Mat:
+    """Takes an image and a template and draws a rectangle around all matches of the template in the image above a
+    certain similarity ratio.
 
     Args:
         img (Mat): The image to search for the template in.
         template (Mat): The template to search for in the image.
         threshold (float, optional): Minimum ratio of similarity. Defaults to 0.5.
         best_only (bool, optional): If True, returns only the best match if exists. Defaults to True.
+        matching_method (callable, optional): The method used to get matches. Defaults to _get_matches.
 
     Returns:
-        Mat: The image with any found detections drawn on it.
+        Mat: The image wih the detections drawn on it
     """
     img_gray, template = _init_images(img, template)
-    res = _get_matches(img_gray, template, threshold, best_only)
-    if len(res) == 0:
+    if matching_method is None:
+        matching_method = get_matches
+    matches = matching_method(img_gray, template, threshold)
+    if len(matches) == 0:
         return img
-    return draw_detected_matches(img, template, res)
+    if best_only:
+        matches = [matches[0]]
+    return _draw_detected_matches(img, template, matches)
 
 
-def draw_detected_matches(img: Mat, template: Mat, matches: list[tuple]) -> Mat:
+def match_template_to_img_size_invariant(img: Mat,
+                          template: Mat,
+                          threshold: float = 0.5,
+                          best_only: bool = True,):
+    return match_template_to_img(img, template, threshold, best_only, get_matches_size_invariant)
+
+
+def _draw_detected_matches(img: Mat, template: Mat, matches: list[tuple]) -> Mat:
     """Draws a rectangle around the given matches.
 
     Args:
@@ -57,23 +70,3 @@ def _init_images(img: Mat, template: Mat) -> tuple[Mat,Mat]:
         tuple[Mat,Mat]: A tuple of the grayscale image and the grayscale template.
     """
     return convert_to_grayscale(img), convert_to_grayscale(template)
-
-
-def _get_matches(img: Mat, template: Mat, threshold: float, best_only: bool) -> list[tuple]:
-    """Gets a list of matches for the template in the image.
-
-    Args:
-        img (Mat): The image to search for the template in.
-        template (Mat): The template to search for in the image.
-        threshold (float, optional): Minimum ratio of similarity. Defaults to 0.5.
-        best_only (bool, optional): If True, returns only the best match if exists. Defaults to True.
-
-    Returns:
-        list[tuple]: Returns a list of the x and y coordinates of the top left corner of any found matches.
-    """
-    res = match_template(img, template)
-    loc = np.where(res >= threshold)
-    if len(loc[0]) == len(loc[1]) == 0:
-        return []
-    points = [*zip(*loc[::-1])]
-    return [points[0]] if best_only else points

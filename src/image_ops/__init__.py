@@ -60,7 +60,7 @@ def draw_rectangle_from_detection(_img, res, color=(0, 255, 0), thickness=2):
     if res is None:
         return _img
     for x, y, w, h in res:
-        draw_rectangle_on_image(img, (x,y), w, h)
+        draw_rectangle_on_image(img, (x, y), w, h)
     return img
 
 
@@ -78,3 +78,8 @@ def convert_to_float32(img):
 
 def get_image_min_max_levels(img):
     return np.min(img), np.max(img)
+
+
+def rotate_image(img, angle: float):
+    shape = get_shape(img)
+    return cv2.warpAffine(img, cv2.getRotationMatrix2D(shape.center, angle, 1.0), (shape.width, shape.height))

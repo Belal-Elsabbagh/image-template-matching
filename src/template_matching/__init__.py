@@ -4,7 +4,7 @@ This module contains the main function for template matching.
 from cv2.mat_wrapper import Mat
 
 from src.image_ops import get_shape, draw_rectangle_on_image, convert_to_grayscale
-from src.template_matching.get_matches import get_matches, get_matches_size_invariant
+from src.template_matching.get_matches import get_matches, get_matches_size_flexible, get_matches_rotation_flexible
 
 
 def match_template_to_img(img: Mat,
@@ -35,11 +35,18 @@ def match_template_to_img(img: Mat,
     return _draw_detected_matches(img, template, matches)
 
 
-def match_template_to_img_size_invariant(img: Mat,
+def match_template_to_img_size_flexible(img: Mat,
                           template: Mat,
                           threshold: float = 0.5,
                           best_only: bool = True,):
-    return match_template_to_img(img, template, threshold, best_only, get_matches_size_invariant)
+    return match_template_to_img(img, template, threshold, best_only, get_matches_size_flexible)
+
+
+def match_template_to_img_rotation_flexible(img: Mat,
+                          template: Mat,
+                          threshold: float = 0.5,
+                          best_only: bool = True,):
+    return match_template_to_img(img, template, threshold, best_only, get_matches_rotation_flexible)
 
 
 def _draw_detected_matches(img: Mat, template: Mat, matches: list[tuple]) -> Mat:

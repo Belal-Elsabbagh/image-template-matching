@@ -1,7 +1,7 @@
 import numpy as np
 from cv2.mat_wrapper import Mat
 
-from src.image_ops import match_template, get_shape
+from src.image_ops import match_template, get_shape, rotate_image
 from src.image_ops.scale_img import scale_img
 
 
@@ -22,7 +22,7 @@ def get_matches(img: Mat, template: Mat, threshold: float) -> list[tuple]:
     return [] if len(loc[0]) == len(loc[1]) == 0 else points
 
 
-def get_matches_size_invariant(img: Mat, template: Mat, threshold: float):
+def get_matches_size_flexible(img: Mat, template: Mat, threshold: float):
     results = []
     img_shape, tmp_shape = get_shape(img), get_shape(template)
     scale, step = 1, 0.1
@@ -31,4 +31,12 @@ def get_matches_size_invariant(img: Mat, template: Mat, threshold: float):
         img = scale_img(img, scale)
         img_shape = get_shape(img)
         scale -= step
+    return results
+
+
+def get_matches_rotation_flexible(img: Mat, template: Mat, threshold: float):
+    results = []
+    for angle in range(1, 360, 1):
+        results += get_matches(img, template, threshold)
+        img = rotate_image(img, angle)
     return results

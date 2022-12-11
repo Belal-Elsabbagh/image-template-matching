@@ -9,6 +9,7 @@ class ImageShape:
         px_count = h * w
         self.height = h
         self.width = w
+        self.center = (self.width//2, self.height//2)
         self.channel_count = ch
         self.pixel_count = px_count
         self.min_level, self.max_level = np.min(img), np.max(img)

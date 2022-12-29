@@ -1,5 +1,4 @@
-from test import _test_template_matching, test_size_flexible_template_matching, \
-    test_rotation_flexible_template_matching, test_template_matching
+from test import test_size_flexible_template_matching, test_rotation_flexible_template_matching, test_template_matching
 
 if __name__ == '__main__':
     rainbow_path = r'data\rainbow.png'

@@ -25,12 +25,11 @@ def get_matches(img: Mat, template: Mat, threshold: float) -> list[tuple]:
 def get_matches_size_flexible(img: Mat, template: Mat, threshold: float):
     results = []
     img_shape, tmp_shape = get_shape(img), get_shape(template)
-    scale, step = 1, 0.1
+    scale = 0.9
     while img_shape.height > tmp_shape.height and img_shape.width > tmp_shape.width:
         results += get_matches(img, template, threshold)
         img = scale_img(img, scale)
         img_shape = get_shape(img)
-        scale -= step
     return results
 
 

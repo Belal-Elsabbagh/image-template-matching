@@ -36,7 +36,7 @@ def get_matches_size_flexible(img: Mat, template: Mat, threshold: float):
 
 def get_matches_rotation_flexible(img: Mat, template: Mat, threshold: float):
     results = []
-    for angle in range(1, 360, 1):
+    for angle in range(1, 360, 2):
         results += get_matches(img, template, threshold)
         img = rotate_image(img, angle)
     return results

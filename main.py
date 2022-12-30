@@ -8,5 +8,5 @@ if __name__ == '__main__':
 
     test_template_matching(color_pencils_path, color_pencils_template_path)
     test_size_flexible_template_matching(rainbow_path, rainbow_template_path, 0.999, False)
-    test_rotation_flexible_template_matching(rainbow_path, rainbow_template_path, 0.999, False)
+    test_rotation_flexible_template_matching(rainbow_path, r'data\rotated-rainbow_template.png', 0.999, False)
     test_template_matching(rainbow_path, color_pencils_template_path, 0.6, False)
